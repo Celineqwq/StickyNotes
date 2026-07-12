@@ -1,0 +1,153 @@
+<Window x:Class="StickyNotes.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="设置"
+        Width="380" Height="480"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="便利贴设置"
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16" />
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+
+            <StackPanel>
+
+                <!-- ═══ Basic Settings ═══ -->
+                <GroupBox Header="基本设置" Margin="0,0,0,12" Padding="8">
+                    <StackPanel>
+                        <CheckBox x:Name="AlwaysOnTopCheckBox"
+                                  Content="窗口置顶锁定" Margin="0,4"
+                                  Checked="AlwaysOnTop_Checked"
+                                  Unchecked="AlwaysOnTop_Unchecked" />
+
+                        <CheckBox x:Name="DraggableCheckBox"
+                                  Content="允许拖动窗口" Margin="0,4" />
+
+                        <CheckBox x:Name="TrackClipboardCheckBox"
+                                  Content="跟踪剪贴板（每次复制自动添加）" Margin="0,4"
+                                  ToolTip="开启后每次复制内容会自动添加为新便利贴" />
+
+                        <CheckBox x:Name="AutoStartCheckBox"
+                                  Content="开机自启" Margin="0,4" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- ═══ Display ═══ -->
+                <GroupBox Header="显示设置" Margin="0,0,0,12" Padding="8">
+                    <StackPanel>
+                        <Grid Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="窗口模式：" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1"
+                                      x:Name="WindowModeCombo"
+                                      SelectedIndex="0"
+                                      HorizontalAlignment="Right"
+                                      MinWidth="100"
+                                      SelectionChanged="WindowModeCombo_SelectionChanged">
+                                <ComboBoxItem Content="普通窗口" />
+                                <ComboBoxItem Content="悬浮球模式" />
+                            </ComboBox>
+                        </Grid>
+
+                        <Grid Margin="0,8,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="默认模板：" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1"
+                                      x:Name="TemplateCombo"
+                                      HorizontalAlignment="Right"
+                                      MinWidth="100"
+                                      SelectionChanged="TemplateCombo_SelectionChanged">
+                                <ComboBoxItem Content="经典黄" Tag="Yellow" />
+                                <ComboBoxItem Content="樱花粉" Tag="Pink" />
+                                <ComboBoxItem Content="薄荷绿" Tag="Green" />
+                                <ComboBoxItem Content="天空蓝" Tag="Blue" />
+                                <ComboBoxItem Content="暖橙" Tag="Orange" />
+                                <ComboBoxItem Content="薰衣草紫" Tag="Purple" />
+                            </ComboBox>
+                        </Grid>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- ═══ Data Management ═══ -->
+                <GroupBox Header="数据管理" Margin="0,0,0,12" Padding="8">
+                    <StackPanel>
+                        <TextBlock x:Name="StatsText"
+                                   Text="加载中..."
+                                   FontSize="12"
+                                   Foreground="#666"
+                                   Margin="0,4" />
+
+                        <Button x:Name="CleanupButton"
+                                Content="🗑️ 清理7天前的记录"
+                                Height="32"
+                                Margin="0,8,0,0"
+                                Padding="10,0"
+                                Background="#FFF3E0"
+                                BorderThickness="1"
+                                BorderBrush="#FFE0B2"
+                                Cursor="Hand"
+                                Click="CleanupButton_Click" />
+
+                        <Button x:Name="ImportButton"
+                                Content="📥 导入 JSON 数据"
+                                Height="32"
+                                Margin="0,8,0,0"
+                                Padding="10,0"
+                                Background="#E3F2FD"
+                                BorderThickness="1"
+                                BorderBrush="#BBDEFB"
+                                Cursor="Hand"
+                                Click="ImportButton_Click" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ═══ Buttons ═══ -->
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Content="确定"
+                    Width="80" Height="32"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="OkButton_Click" />
+
+            <Button Grid.Column="3"
+                    Content="取消"
+                    Width="80" Height="32"
+                    Background="#E0E0E0"
+                    Foreground="#333"
+                    Cursor="Hand"
+                    Click="CancelButton_Click" />
+        </Grid>
+    </Grid>
+</Window>

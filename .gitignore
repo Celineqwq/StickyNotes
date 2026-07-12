@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.DotSettings
+
+# VS / Rider
+.vs/
+.idea/
+
+# Publish
+publish/
+
+# OS
+Thumbs.db
+Desktop.ini

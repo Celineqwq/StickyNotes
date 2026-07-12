@@ -1,0 +1,204 @@
+<UserControl x:Class="StickyNotes.Controls.NoteCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:StickyNotes.Converters"
+             xmlns:models="clr-namespace:StickyNotes.Models"
+             mc:Ignorable="d"
+             d:DesignHeight="120"
+             d:DataContext="{d:DesignInstance models:NoteItem}">
+
+    <UserControl.Resources>
+        <converters:NoteTypeToIconConverter x:Key="TypeIconConverter" />
+        <converters:FilePathToImageConverter x:Key="ImageConverter" />
+    </UserControl.Resources>
+
+    <Border x:Name="CardBorder"
+            CornerRadius="4"
+            Padding="4,2"
+            Margin="0,0,0,2"
+            BorderBrush="#40FFFFFF"
+            BorderThickness="1"
+            AllowDrop="False"
+            PreviewMouseLeftButtonDown="Card_PreviewMouseLeftButtonDown"
+            PreviewMouseMove="Card_PreviewMouseMove"
+            MouseLeftButtonUp="Card_MouseLeftButtonUp">
+
+        <Border.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="复制内容" Click="CopyMenuItem_Click" />
+                <MenuItem x:Name="PinMenuItem" Header="置顶" Click="PinToTopMenuItem_Click" />
+                <MenuItem Header="多选" Click="MultiSelectMenuItem_Click" />
+                <Separator />
+                <MenuItem Header="模板">
+                    <MenuItem Header="经典黄" Click="TemplateMenuItem_Click" Tag="Yellow" />
+                    <MenuItem Header="樱花粉" Click="TemplateMenuItem_Click" Tag="Pink" />
+                    <MenuItem Header="薄荷绿" Click="TemplateMenuItem_Click" Tag="Green" />
+                    <MenuItem Header="天空蓝" Click="TemplateMenuItem_Click" Tag="Blue" />
+                    <MenuItem Header="暖橙" Click="TemplateMenuItem_Click" Tag="Orange" />
+                    <MenuItem Header="薰衣草紫" Click="TemplateMenuItem_Click" Tag="Purple" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="导出为 JSON" Click="ExportJsonMenuItem_Click" />
+                <MenuItem Header="打开文件位置" Click="OpenFileLocation_Click"
+                          Visibility="{Binding Type, Converter={x:Static converters:VisibilityConverters.FileTypeVisibility}}" />
+                <MenuItem Header="删除" Click="DeleteMenuItem_Click" />
+            </ContextMenu>
+        </Border.ContextMenu>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Row 0: Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Multi-select checkbox -->
+                <CheckBox x:Name="SelectCheckBox"
+                          Grid.Column="0"
+                          IsChecked="{Binding IsSelected}"
+                          Width="14" Height="14"
+                          VerticalAlignment="Center"
+                          Margin="0,0,2,0"
+                          Visibility="Collapsed"
+                          Cursor="Hand"
+                          Focusable="False"
+                          Checked="SelectCheckBox_Changed"
+                          Unchecked="SelectCheckBox_Changed">
+                    <CheckBox.Template>
+                        <ControlTemplate TargetType="CheckBox">
+                            <Border x:Name="CheckBorder"
+                                    Width="14" Height="14"
+                                    Background="White"
+                                    BorderBrush="#BDBDBD"
+                                    BorderThickness="1.5"
+                                    CornerRadius="2">
+                                <Path x:Name="CheckMark"
+                                      Data="M 2.5 7 L 5.5 10 L 11.5 3"
+                                      Stroke="#4CAF50"
+                                      StrokeThickness="1.8"
+                                      StrokeLineJoin="Round"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                                    <Setter TargetName="CheckBorder" Property="Background" Value="#E8F5E9" />
+                                    <Setter TargetName="CheckBorder" Property="BorderBrush" Value="#4CAF50" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="CheckBorder" Property="BorderBrush" Value="#757575" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </CheckBox.Template>
+                </CheckBox>
+
+                <Border Grid.Column="1"
+                        Width="16" Height="16"
+                        CornerRadius="8"
+                        Background="#40FFFFFF">
+                    <TextBlock Text="{Binding Type, Converter={StaticResource TypeIconConverter}}"
+                               FontSize="9"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+
+                <TextBlock Grid.Column="2"
+                           Text="{Binding FileName}"
+                           FontSize="9"
+                           Opacity="0.5"
+                           TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center"
+                           Margin="3,0,0,0"
+                           Visibility="{Binding Type, Converter={x:Static converters:VisibilityConverters.FileTypeVisibility}}" />
+
+                <!-- Pin indicator -->
+                <TextBlock Grid.Column="3"
+                           Text="📌"
+                           FontSize="8"
+                           VerticalAlignment="Center"
+                           Margin="0,0,2,0"
+                           Visibility="{Binding IsPinned, Converter={x:Static converters:VisibilityConverters.BoolToVisible}}" />
+            </Grid>
+
+            <!-- Row 1: Content -->
+            <Grid Grid.Row="1" Margin="0,1,0,0">
+                <!-- Text -->
+                <Grid Visibility="{Binding Type, Converter={x:Static converters:VisibilityConverters.TextTypeVisibility}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="ContentBox"
+                             Grid.Row="0"
+                             Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="12"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             MinHeight="16"
+                             MaxHeight="80"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             Padding="0"
+                             IsReadOnly="True"
+                             HorizontalAlignment="Stretch"
+                             PreviewMouseLeftButtonDown="ContentBox_PreviewMouseLeftButtonDown"
+                             PreviewMouseDoubleClick="ContentBox_PreviewMouseDoubleClick"
+                             LostFocus="ContentBox_LostFocus"
+                             PreviewKeyDown="ContentBox_PreviewKeyDown" />
+
+                    <TextBlock x:Name="ExpandButton"
+                               Grid.Row="1"
+                               Text="… 展开"
+                               FontSize="10"
+                               Foreground="#888"
+                               Cursor="Hand"
+                               Visibility="Collapsed"
+                               MouseLeftButtonDown="ExpandButton_Click" />
+                </Grid>
+
+                <!-- Image -->
+                <Border CornerRadius="4"
+                        MaxWidth="140"
+                        MaxHeight="80"
+                        BorderThickness="0"
+                        Visibility="{Binding Type, Converter={x:Static converters:VisibilityConverters.ImageTypeVisibility}}">
+                    <Image Source="{Binding Content, Converter={StaticResource ImageConverter}}"
+                           MaxHeight="80"
+                           Stretch="Uniform" />
+                </Border>
+
+                <!-- File -->
+                <StackPanel Visibility="{Binding Type, Converter={x:Static converters:VisibilityConverters.FileTypeVisibility}}">
+                    <TextBlock Text="{Binding Content}"
+                               FontSize="10"
+                               TextWrapping="Wrap"
+                               Opacity="0.6" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Row 2: Timestamp -->
+            <TextBlock Grid.Row="2"
+                       Text="{Binding CreatedAt, StringFormat='{}{0:MM/dd HH:mm}'}"
+                       FontSize="8"
+                       Opacity="0.3"
+                       Margin="0,1,0,0" />
+        </Grid>
+    </Border>
+</UserControl>

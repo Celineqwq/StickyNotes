@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Template color definitions -->
+    <SolidColorBrush x:Key="Template.Yellow" Color="#FFF9C4" />
+    <SolidColorBrush x:Key="Template.Yellow.Header" Color="#FFF176" />
+    <SolidColorBrush x:Key="Template.Yellow.Text" Color="#5D4037" />
+
+    <SolidColorBrush x:Key="Template.Pink" Color="#F8BBD0" />
+    <SolidColorBrush x:Key="Template.Pink.Header" Color="#F48FB1" />
+    <SolidColorBrush x:Key="Template.Pink.Text" Color="#880E4F" />
+
+    <SolidColorBrush x:Key="Template.Green" Color="#C8E6C9" />
+    <SolidColorBrush x:Key="Template.Green.Header" Color="#A5D6A7" />
+    <SolidColorBrush x:Key="Template.Green.Text" Color="#1B5E20" />
+
+    <SolidColorBrush x:Key="Template.Blue" Color="#BBDEFB" />
+    <SolidColorBrush x:Key="Template.Blue.Header" Color="#90CAF9" />
+    <SolidColorBrush x:Key="Template.Blue.Text" Color="#0D47A1" />
+
+    <SolidColorBrush x:Key="Template.Orange" Color="#FFE0B2" />
+    <SolidColorBrush x:Key="Template.Orange.Header" Color="#FFCC80" />
+    <SolidColorBrush x:Key="Template.Orange.Text" Color="#BF360C" />
+
+    <SolidColorBrush x:Key="Template.Purple" Color="#E1BEE7" />
+    <SolidColorBrush x:Key="Template.Purple.Header" Color="#CE93D8" />
+    <SolidColorBrush x:Key="Template.Purple.Text" Color="#4A148C" />
+
+    <!-- Base card style (used as a resource in NoteCard) -->
+    <Style x:Key="NoteCardBase" TargetType="Border">
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="8" Opacity="0.15" ShadowDepth="2" Color="#000000" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Text block style for note content -->
+    <Style x:Key="NoteContentText" TargetType="TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="TextTrimming" Value="None" />
+    </Style>
+
+    <!-- File info text -->
+    <Style x:Key="FileInfoText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Opacity" Value="0.6" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <!-- Timestamp text -->
+    <Style x:Key="TimestampText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="Opacity" Value="0.45" />
+        <Setter Property="Margin" Value="0,4,0,0" />
+    </Style>
+</ResourceDictionary>
