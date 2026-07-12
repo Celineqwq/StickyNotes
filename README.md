@@ -1,6 +1,6 @@
 # 便利贴 (StickyNotes)
 
-Windows 桌面便利贴应用，基于 .NET 8 + WPF 开发。
+Windows 桌面便利贴应用，基于 .NET 8 + WPF 开发。（本项目使用Claude Code开发）
 
 ## 功能
 
